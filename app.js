@@ -5,8 +5,11 @@ class Snake {
 		this._posX = Math.floor(Math.random() * gridScaleX) + 1;
 		this._posY = Math.floor(Math.random() * gridScaleY) + 1;
 		this._position = [this._posX, this._posY];
-		this._bodyLength = 0;
-		this._body = [];
+		this.length = 1;
+		this.body = [this._position];
+		this.speed = 150;
+		this.apple = [Math.floor(Math.random() * gridScaleX) + 1, Math.floor(Math.random() * gridScaleY) + 1]
+		this.alive = true;
 	}
 	get posX() {
 		return this._posX;
@@ -26,7 +29,7 @@ class Snake {
 			x = 1;
 		}
 		this._posX = x;
-		this._position = [x, this._posY];
+		this.position = [x, this._posY];
 	}
 
 	set posY(y) {
@@ -37,36 +40,57 @@ class Snake {
 			y = 1;
 		}
 		this._posY = y;
-		this._position = [this._posX, y];
+		this.position = [this._posX, y];
+	}
+
+	set position(array){
+		this._position = array
+		this.checkForApple();
+		this.checkForBody();
+		this.body.unshift(array);
+		if(this.body.length > this.length){
+			this.body.pop();
+		}
+	}
+
+	checkForApple() {
+		if(this.apple[0] === this.position[0] && this.apple[1] === this.position[1]){
+			this.length = this.length + 2;
+			this.speed = this.speed * 0.95;
+			this.apple = [Math.floor(Math.random() * gridScaleX) + 1, Math.floor(Math.random() * gridScaleY) + 1];
+			console.log("found apple");
+		}
+	}
+
+	checkForBody() {
+		for (let i = 0; i < this.body.length; i++) {
+			if(this.body[i][0] === this.position[0] && this.body[i][1] === this.position[1]){
+				this.alive = false;
+			}
+		}
 	}
 
 	goUp() {
 		this.posY = this.posY - 1;
-		console.log("Went up");
-		console.dir(this);
 	}
 
 	goDown() {
 		this.posY = this.posY + 1;
-		console.log("Went down");
-		console.dir(this);
 	}
 
 	goLeft() {
 		this.posX = this.posX - 1;
-		console.log("Went left");
-		console.dir(this);
 	}
 
 	goRight() {
 		this.posX = this.posX + 1;
-		console.log("Went right");
-		console.dir(this);
 	}
 }
 
 
-const snake = new Snake();
+
+let snake;
+let currentInt;
 
 function createGrid() {
 	const gridDiv = document.getElementById("grid")
@@ -89,25 +113,69 @@ function createGrid() {
 }
 
 function renderSnake() {
-	const snakePixel = document.querySelector("[data-position='" + snake.position +"']");
-	console.log(snakePixel);
-}
-
-function selectPixel(x,y) {
-	const pixels = document.querySelectorAll(".pixel");
-
-
-	for (const pixel of pixels) {
-		if(pixel.dataset.positionX == x && pixel.dataset.positionY == y){
-			pixel.dataset.snake = true;
-			pixel.setAttribute("id", "snakehead")
-			console.log("selected");
-		}
+	for (let i = 0; i < snake.body.length; i++) {
+		const snakePixel = document.querySelector("[data-position='" + snake.body[i] +"']");
+		snakePixel.dataset.snake = true
 	}
-
+}
+function renderApple() {
+	const applePixel = document.querySelector("[data-position='" + snake.apple +"']");
+	applePixel.dataset.apple = true
 }
 
-function goUp() {
-
+function renderScore() {
+	
 }
 
+
+function control(e){
+	if(e.keyCode === 39) {
+		clearInterval(currentInt);
+		currentInt = setInterval(() => {
+			snake.goRight();
+			renderGame();
+		}, snake.speed);
+	}
+	if(e.keyCode === 38) {
+		clearInterval(currentInt);
+		currentInt = setInterval(() => {
+			snake.goUp();
+			renderGame();
+		}, snake.speed);
+	}
+	if(e.keyCode === 37) {
+		clearInterval(currentInt);
+		currentInt = setInterval(() => {
+			snake.goLeft();
+			renderGame();
+		}, snake.speed);
+	}
+	if(e.keyCode === 40) {
+		clearInterval(currentInt);
+		currentInt = setInterval(() => {
+			snake.goDown();
+			renderGame();
+		}, snake.speed);
+	}
+	
+}
+
+function renderGame(){
+	if(snake.alive) {
+		createGrid();
+		renderSnake();
+		renderApple();
+	} else {
+		const gridDiv = document.getElementById("grid");
+		gridDiv.innerText = "GameOver";
+	}
+	
+}
+
+function startGame(){
+	snake = new Snake();
+	clearInterval(currentInt);
+	renderGame();
+}
+
+document.addEventListener("keyup", control)
