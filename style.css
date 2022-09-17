@@ -17,3 +17,10 @@
 .pixel[data-snake="false"] {
 	background-color: rgb(137, 174, 139);
 }
+
+.pixel[data-apple="false"] {
+	background-color: rgb(137, 174, 139);
+}
+.pixel[data-apple="true"] {
+	background-color: rgb(186, 166, 123);
+}
