@@ -15,11 +15,25 @@ class Snake {
 	get position() {
 		return this._position;
 	}
+
 	set posX(x) {
+		if(x == 0){
+			x = gridScaleX;
+		}
+		if(x == gridScaleX + 1){
+			x = 1;
+		}
 		this._posX = x;
 		this._position = [x, this._posY];
 	}
+
 	set posY(y) {
+		if(y == 0){
+			y = gridScaleY;
+		}
+		if(y == gridScaleY + 1){
+			y = 1;
+		}
 		this._posY = y;
 		this._position = [this._posX, y];
 	}
@@ -27,6 +41,24 @@ class Snake {
 	goUp() {
 		this.posY = this.posY - 1;
 		console.log("Went up");
+		console.dir(this);
+	}
+
+	goDown() {
+		this.posY = this.posY + 1;
+		console.log("Went down");
+		console.dir(this);
+	}
+
+	goLeft() {
+		this.posX = this.posX - 1;
+		console.log("Went left");
+		console.dir(this);
+	}
+
+	goRight() {
+		this.posX = this.posX + 1;
+		console.log("Went right");
 		console.dir(this);
 	}
 }
