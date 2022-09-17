@@ -1,5 +1,5 @@
-const gridScaleX = 32;
-const gridScaleY = 32;
+const gridScaleX = 16;
+const gridScaleY = 16;
 class Snake {
 	constructor() {
 		this._posX = Math.floor(Math.random() * gridScaleX) + 1;
@@ -124,50 +124,60 @@ function renderApple() {
 }
 
 function renderScore() {
-	
+	const scoreEl = document.getElementById("score");
+	scoreEl.innerText = snake.length;
+	if(!snake.alive){
+		scoreEl.innerText = scoreEl.innerText + " // GAME OVER";
+	}
 }
 
 
 function control(e){
-	if(e.keyCode === 39) {
-		clearInterval(currentInt);
-		currentInt = setInterval(() => {
-			snake.goRight();
-			renderGame();
-		}, snake.speed);
+	if(snake.alive){
+		if(e.keyCode === 39) {
+			clearInterval(currentInt);
+			currentInt = setInterval(() => {
+				snake.goRight();
+				renderGame();
+			}, snake.speed);
+		}
+		if(e.keyCode === 38) {
+			clearInterval(currentInt);
+			currentInt = setInterval(() => {
+				snake.goUp();
+				renderGame();
+			}, snake.speed);
+		}
+		if(e.keyCode === 37) {
+			clearInterval(currentInt);
+			currentInt = setInterval(() => {
+				snake.goLeft();
+				renderGame();
+			}, snake.speed);
+		}
+		if(e.keyCode === 40) {
+			clearInterval(currentInt);
+			currentInt = setInterval(() => {
+				snake.goDown();
+				renderGame();
+			}, snake.speed);
+		}
 	}
-	if(e.keyCode === 38) {
-		clearInterval(currentInt);
-		currentInt = setInterval(() => {
-			snake.goUp();
-			renderGame();
-		}, snake.speed);
-	}
-	if(e.keyCode === 37) {
-		clearInterval(currentInt);
-		currentInt = setInterval(() => {
-			snake.goLeft();
-			renderGame();
-		}, snake.speed);
-	}
-	if(e.keyCode === 40) {
-		clearInterval(currentInt);
-		currentInt = setInterval(() => {
-			snake.goDown();
-			renderGame();
-		}, snake.speed);
-	}
-	
 }
 
 function renderGame(){
 	if(snake.alive) {
 		createGrid();
 		renderSnake();
+		renderScore();
 		renderApple();
 	} else {
-		const gridDiv = document.getElementById("grid");
-		gridDiv.innerText = "GameOver";
+		clearInterval(currentInt);
+		createGrid();
+		renderSnake();
+		renderScore();
+		renderApple();
+		
 	}
 	
 }
