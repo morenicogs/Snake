@@ -1,0 +1,19 @@
+.grid {
+	width: 640px;
+	height: 640px;
+	display: flex;
+	flex-wrap: wrap;
+	border-style: solid;
+}
+
+.grid div {
+	width: 20px;
+	height: 20px;
+}
+
+.pixel[data-snake="true"] {
+	background-color: rgb(48, 81, 57);
+}
+.pixel[data-snake="false"] {
+	background-color: rgb(137, 174, 139);
+}
