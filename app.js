@@ -5,6 +5,8 @@ class Snake {
 		this._posX = Math.floor(Math.random() * gridScaleX) + 1;
 		this._posY = Math.floor(Math.random() * gridScaleY) + 1;
 		this._position = [this._posX, this._posY];
+		this._bodyLength = 0;
+		this._body = [];
 	}
 	get posX() {
 		return this._posX;
@@ -79,18 +81,15 @@ function createGrid() {
 			pixel.classList.add("pixel");
 			pixel.dataset.positionX = j;
 			pixel.dataset.positionY = i;
-			if(snake.posX == j && snake.posY == i) {
-				pixel.dataset.snake = true;
-			} else {
-				pixel.dataset.snake = false;
-			}
+			pixel.dataset.position = [j,i];
+			pixel.dataset.snake = false;
 			gridDiv.append(pixel);
 		}
 	}
 }
 
-function showSnake() {
-	const snakePixel = document.querySelector("[data-snake='true']");
+function renderSnake() {
+	const snakePixel = document.querySelector("[data-position='" + snake.position +"']");
 	console.log(snakePixel);
 }
 
