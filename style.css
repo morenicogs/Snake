@@ -4,6 +4,18 @@
 	display: flex;
 	flex-wrap: wrap;
 	border-style: solid;
+	align-content: center;
+}
+html, body {
+	margin: 0;
+	height: 100vh;
+}
+.container {
+	height: 100vh;
+	background: black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .grid div {

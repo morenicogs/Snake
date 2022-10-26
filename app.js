@@ -133,7 +133,7 @@ function renderScore() {
 
 
 function control(e){
-	if(snake.alive){
+	if(snake?.alive){
 		if(e.keyCode === 39) {
 			clearInterval(currentInt);
 			currentInt = setInterval(() => {
@@ -162,6 +162,8 @@ function control(e){
 				renderGame();
 			}, snake.speed);
 		}
+	} else {
+		startGame();
 	}
 }
 
@@ -169,13 +171,13 @@ function renderGame(){
 	if(snake.alive) {
 		createGrid();
 		renderSnake();
-		renderScore();
+		//renderScore();
 		renderApple();
 	} else {
 		clearInterval(currentInt);
 		createGrid();
 		renderSnake();
-		renderScore();
+		//renderScore();
 		renderApple();
 		
 	}
@@ -189,3 +191,6 @@ function startGame(){
 }
 
 document.addEventListener("keyup", control)
+document.addEventListener('DOMContentLoaded', (event) => {
+	startGame();
+});
